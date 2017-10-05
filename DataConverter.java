@@ -20,7 +20,9 @@ public class DataConverter {
 		
 		List<Customer> customerList = fr.readCustomers();		
 		
-		List<Product> productList = fr.readProducts();		
+		List<Product> productList = fr.readProducts();	
+		
+		List<Invoice> invoiceList = fr.readInvoices();
 		
 		// Write ArrayList into a Json file
 		JsonWriter jWriter = new JsonWriter();
@@ -33,6 +35,12 @@ public class DataConverter {
 	     xmlWriter.xmlPersonConverter(personList);
 	     xmlWriter.xmlCustomerConverter(customerList);
 	     xmlWriter.xmlProductConverter(productList);
+	     
+	     
+	     
+	     //TO DO
+	     //Create Output Writer for Invoice Data
+	     
 	     
 	}
 }
