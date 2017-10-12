@@ -5,6 +5,7 @@ public abstract class Product {
 	//data members
 	private String productCode;
 	private String productType;
+	private int productQuantity;
 
 	//Constructor
 	public Product(String productCode, String productType) {
@@ -21,7 +22,8 @@ public abstract class Product {
 		return productType;
 	}
 
-
-
+	public int getProductQuantity() {
+		return productQuantity;
+	}
 
 }
