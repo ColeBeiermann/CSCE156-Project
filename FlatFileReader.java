@@ -246,53 +246,37 @@ public class FlatFileReader {
 						for (int x=0; x < productList.size(); x++) {
 							if(productList.get(x).getProductCode().equals(productCode)) {
 								product = productList.get(x);
+								type = product.getProductType();
 							}
 						}					
-						type = product.getProductType();
 
 						//Depending on type, creates the corresponding object of type Product
 						if(type.equals("P")) {
-							double parkingFee =  Double.parseDouble(data[2]);
-							product = new ParkingPass(productCode, type, parkingFee);
+							int quantity = Integer.parseInt(productArray2[1]);
+							product.setQuantity(quantity);
+							String ticketCode = productArray2[2];
+							ParkingPass parkingPass = (ParkingPass) product;
+							parkingPass.setTicketCode(ticketCode);
+							product = parkingPass;
 						}
 						else if(type.equals("M")) {
-							String dateTime =  data[2];
-							String movieName = data[3];
-							String fullAddress = data[4];
-							String screenNo = data[5];
-							double pricePerUnit = Double.parseDouble(data[6]);
-
-							//Splits the address string into its components
-							String addressStr [] = fullAddress.split(",");
-							String street = addressStr[0];
-							String city = addressStr[1];
-							String state = addressStr[2];
-							String zip = addressStr[3];
-							String country = addressStr[4];
-
-							Address address = new Address(street,city,state,zip,country);
-
-							product = new MovieTicket(productCode, type, dateTime, address,movieName, screenNo, pricePerUnit);
+							int quantity = Integer.parseInt(productArray2[1]);
+							product.setQuantity(quantity);
 						}
 						else if(type.equals("R")) {
-							String name = data[2];
-							double cost = Double.parseDouble(data[3]);
-
-							product = new Refreshment(productCode, type, name, cost);
+							int quantity = Integer.parseInt(productArray2[1]);
+							product.setQuantity(quantity);
 						}
 						else if(type.equals("S")) {
-							String name = data[2];
-							String startDate = data[3];
-							String endDate = data[4];
-							double cost = Double.parseDouble(data[5]);
-							product = new SeasonPass(productCode, type, name, startDate, endDate, cost);
+							int quantity = Integer.parseInt(productArray2[1]);
+							product.setQuantity(quantity);
 						}
 						invoiceProductList.add(product);
 					}
-					
+
 					invoice = new Invoice(invoiceCode, customerCode, personCode, invoiceDate, invoiceProductList);
-					
-					
+
+
 					// Adds the Invoice object into Product ArrayList
 					invoiceList.add(invoice);
 				}
