@@ -211,8 +211,7 @@ public class FlatFileReader {
 	//reads form the Invoice.dat file
 	public ArrayList<Invoice> readInvoices(){
 		Scanner sc = null;
-
-		Product product = null;
+		Invoice invoice = null;
 
 		try {
 			sc = new Scanner(new File("data/Invoices.dat"));
@@ -236,19 +235,21 @@ public class FlatFileReader {
 
 					// Creates Product objects
 					String productArray1 [] = products.split(",");
+					ArrayList<Product> invoiceProductList = new ArrayList<Product>();
 
 					for(int i = 0; i < productArray1.length; i++) {
 						String [] productArray2 = productArray1[i].split(":");
 						String productCode = productArray2[0];
 						String type = "";
-						
-												
+						Product product = null;
+
 						for (int x=0; x < productList.size(); x++) {
 							if(productList.get(x).getProductCode().equals(productCode)) {
 								product = productList.get(x);
 							}
 						}					
 						type = product.getProductType();
+
 						//Depending on type, creates the corresponding object of type Product
 						if(type.equals("P")) {
 							double parkingFee =  Double.parseDouble(data[2]);
@@ -286,11 +287,14 @@ public class FlatFileReader {
 							double cost = Double.parseDouble(data[5]);
 							product = new SeasonPass(productCode, type, name, startDate, endDate, cost);
 						}
+						invoiceProductList.add(product);
 					}
-
-
-					// Adds the Product object into Product ArrayList
-					productList.add(product);
+					
+					invoice = new Invoice(invoiceCode, customerCode, personCode, invoiceDate, invoiceProductList);
+					
+					
+					// Adds the Invoice object into Product ArrayList
+					invoiceList.add(invoice);
 				}
 			}
 			sc.close();
