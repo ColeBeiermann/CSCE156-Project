@@ -23,16 +23,15 @@ public class InvoiceWriter {
 	}
 
 	public void writeSummary() {
-		StringBuilder sb = new StringBuilder();
 
 
 		//Begin writing the summary of all invoices
-		sb.append(String.format("=========================\n"
+		System.out.println(String.format("=========================\n"
 				+ "Executive Summary Report\n"
 				+ "=========================\n"));
 
 		//Headers for Invoice Summary
-		sb.append(String.format("Invoice \t Customer \t\t Salesperson \t\t Subtotal \t\t Fees \t\t Taxes \t\t Discount \t\t Total"));
+		System.out.println(String.format("Invoice \t Customer \t\t Salesperson \t\t Subtotal \t\t Fees \t\t Taxes \t\t Discount \t\t Total"));
 
 		//Find the corresponding customer, person, and products given the respective codes
 		for(Invoice anInvoice : invoiceList) {
@@ -50,7 +49,7 @@ public class InvoiceWriter {
 			}
 
 
-			sb.append(String.format("%-7s,\n", anInvoice.getInvoiceCode()));	
+			System.out.println(String.format("%-7s,\n", anInvoice.getInvoiceCode()));	
 
 			//Add all monetary values to totals
 			FeesTotal += 0.0;
@@ -60,56 +59,53 @@ public class InvoiceWriter {
 			OverallTotal += 0.0;
 
 		}
-		sb.append(String.format("===================================================================================="));
-		sb.append(String.format("TOTALS \t\t\t\t\t\t\t\t\t %.2f, \t\t %.2f \t\t %.2f \t\t %.2f \t\t %.2f", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));
+		System.out.println(String.format("===================================================================================="));
+		System.out.println(String.format("TOTALS \t\t\t\t\t\t\t\t\t %.2f, \t\t %.2f \t\t %.2f \t\t %.2f \t\t %.2f", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));
 
-		System.out.println(sb);
 
 	}
 
 	public void writeReport() {		
-		StringBuilder sb = new StringBuilder();
 
 		//Begin writing the detailed report of each invoice
-		sb.append(String.format("Individual Invoice Detail Reports\n"
+		System.out.println(String.format("Individual Invoice Detail Reports\n"
 				+ "====================================\n"));
 
 		//For loop to go through each invoice
 		for(Invoice anInvoice : invoiceList) {
 
-			sb.append(String.format("Inovice %-7s\n"
+			System.out.println(String.format("Inovice %-7s\n"
 					+ "======================\n", anInvoice.getInvoiceCode()));
 
 			//Display information regarding the salesperson and the customer
-			sb.append(String.format("Salesperson: %s \n"
+			System.out.println(String.format("Salesperson: %s \n"
 					+ "Customer Info:\n"
 					+ "\t %s (%s)\n"
 					+ "\t [%s] \n"
 					+ "\t %s \n"
 					+ "\t %s \n"
 					+ "\t %s %s %s %s %s"));
-			sb.append(String.format("-------------------------"));
+			System.out.println(String.format("-------------------------"));
 
 
 			//Display the details of all products for this invoice
-			sb.append(String.format("Code \t\t Item \t\t SubTotal \t\t Tax \t\t Total\n"));	
+			System.out.println(String.format("Code \t\t Item \t\t SubTotal \t\t Tax \t\t Total\n"));	
 			for (Product aProduct : anInvoice.getProductList()) {
-
-				sb.append(String.format("%s \t\t %s \t\t SubTotal \t\t Tax \t\t Total\n"));
+				
+				
+				System.out.println(String.format("%s \t\t %s \t\t SubTotal \t\t Tax \t\t Total\n", Iproduct.getProductCode()));
 
 			}
+			System.out.println(String.format("SUB-TOTALS \t\t %.2f \t\t %.2f \t\t %.2f\n", SubtotalsTotal, TaxesTotal, OverallTotal));
+			System.out.println(String.format("TOTAL \t\t\t\t\t\t %.2f\n\n", OverallTotal));
 
-			sb.append(String.format("Thank you for your purchase!\n\n\n"));
+			System.out.println(String.format("Thank you for your purchase!\n\n\n"));
 		}
 
 
-		sb.append(String.format("====================================================="));
+		System.out.println(String.format("====================================================="));
 
-		//Print everything to output
-		System.out.println(sb);
 	}
-
-
 
 }
 
