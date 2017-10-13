@@ -38,7 +38,7 @@ public class Invoice {
 	}
 	
 	public String getPersonCode() {
-		return customerCode;
+		return personCode;
 	}
 
 	public void setPersonCode(String personCode) {
@@ -46,7 +46,7 @@ public class Invoice {
 	}
 	
 	public String getInvoiceDate() {
-		return customerCode;
+		return invoiceDate;
 	}
 
 	public void setInvoiceDate(String invoiceDate) {

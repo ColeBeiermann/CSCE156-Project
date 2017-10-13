@@ -22,7 +22,6 @@ public class DataConverter {
 		
 		List<Product> productList = fr.readProducts();
 		
-		List<Invoice> invoiceList = fr.readInvoices();
 		
 		// Write ArrayList into a Json file
 		JsonWriter jWriter = new JsonWriter();
