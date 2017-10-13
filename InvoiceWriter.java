@@ -42,7 +42,7 @@ public class InvoiceWriter {
 			for(int y=0; y < customerList.size(); y++) {
 				Customer customer = null;
 				if(customerList.get(y).getCustomerCode().equals(invoiceList.get(x).getCustomerCode())){
-					aCustomer = customerList.get(x);
+					aCustomer = customerList.get(y);
 					aCustomer = customer;
 				}
 			}
@@ -51,7 +51,7 @@ public class InvoiceWriter {
 			for(int j=0; j < personList.size(); j++) {
 				Person person = null;
 				if(personList.get(j).getPersonCode().equals(invoiceList.get(x).getPersonCode())){
-					aPerson = personList.get(x);
+					aPerson = personList.get(j);
 					aPerson = person;
 				}
 			}
