@@ -50,17 +50,14 @@ public class InvoiceReport {
 				if (customer.getCustomerCode() = anInvoice.getCustomerCode()) {
 				aCustomer = customer; }
 				}
-				
+			
+			Person aPerson = null;
 			for(Person person : personList) {
 				String personCode = person.getPersonCode();
-				if (personCode = anInvoice.getCustomerCode()) {
-					aCustomer = customer; }
+				if (personCode = anInvoice.getPersonCode()) {
+					aPerson = person; }
 				}
 				
-			for(Customer customer : customerList) {
-				if (customer.getCustomerCode() = anInvoice.getCustomerCode()) {
-				aCustomer = customer; }
-			}
 			
 			sb.append(String.format("%-7s,\n", anInvoice.getInvoiceCode()));	
 			
