@@ -16,11 +16,11 @@ public class DataConverter {
 		 * Stores objects in respective ArrayList
 		 */
 		
-		List<Person> personList = fr.readPersons();		
+		List<Person> personList = fr.readPersons();	
 		
-		List<Customer> customerList = fr.readCustomers();		
+		List<Customer> customerList = fr.readCustomers();
 		
-		List<Product> productList = fr.readProducts();	
+		List<Product> productList = fr.readProducts();
 		
 		List<Invoice> invoiceList = fr.readInvoices();
 		

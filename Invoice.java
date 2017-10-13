@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 //This class creates an invoice object
 public class Invoice {
 
@@ -6,15 +8,15 @@ public class Invoice {
 	private String customerCode;
 	private String personCode;
 	private String invoiceDate;
-	private Product product;
+	private ArrayList<Product> productList;
 	
 	//Constructor
-	public Invoice(String invoiceCode, String customerCode, String personCode, String invoiceDate, Product product) {
+	public Invoice(String invoiceCode, String customerCode, String personCode, String invoiceDate, ArrayList<Product> productList) {
 		this.invoiceCode = invoiceCode;
 		this.customerCode = customerCode;
 		this.personCode = personCode;		
 		this.invoiceDate = invoiceDate;
-		this.product = product;
+		this.setProductList(productList);
 	}
 	
 	
@@ -49,6 +51,14 @@ public class Invoice {
 
 	public void setInvoiceDate(String invoiceDate) {
 		this.invoiceDate = invoiceDate;
+	}
+
+	public ArrayList<Product> getProductList() {
+		return productList;
+	}
+
+	public void setProductList(ArrayList<Product> productList) {
+		this.productList = productList;
 	}
 	
 }

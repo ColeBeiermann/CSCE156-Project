@@ -4,6 +4,7 @@ public class ParkingPass extends Product{
 
 	//data member
 	private double parkingFee;
+	private String ticketCode;
 	
 	//Constructor
 	public ParkingPass(String productCode, String productType, double parkingFee) {
@@ -18,5 +19,13 @@ public class ParkingPass extends Product{
 
 	public void setParkingFee(double parkingFee) {
 		this.parkingFee = parkingFee;
+	}
+	
+	public String getTicketCode() {
+		return this.ticketCode;
+	}
+	
+	public void setTicketCode(String code) {
+		this.ticketCode = code;
 	}
 }
