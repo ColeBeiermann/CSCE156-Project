@@ -34,21 +34,28 @@ public class InvoiceWriter {
 		System.out.println(String.format("Invoice \t Customer \t\t Salesperson \t\t Subtotal \t\t Fees \t\t Taxes \t\t Discount \t\t Total"));
 
 		//Find the corresponding customer, person, and products given the respective codes
-		for(Invoice anInvoice : invoiceList) {
+
+		Invoice anInvoice = null;
+		for (int x=0; x < invoiceList.size(); x++) {
+			
 			Customer aCustomer = null;
-			for(Customer customer : customerList) {
-				if (customer.getCustomerCode().equals(anInvoice.getCustomerCode())) {
-					aCustomer = customer; }
+			for(int y=0; x < customerList.size(); x++) {
+				Customer customer = null;
+				if(customerList.get(x).getCustomerCode().equals(invoiceList.get(x).getCustomerCode())){
+					aCustomer = customerList.get(x);
+					aCustomer = customer;
+				}
 			}
-
+			
 			Person aPerson = null;
-			for(Person person : personList) {
-				String personCode = person.getPersonCode();
-				if (personCode.equals(anInvoice.getPersonCode())) {
-					aPerson = person; }
+			for(int y=0; x < personList.size(); x++) {
+				Person person = null;
+				if(personList.get(x).getPersonCode().equals(invoiceList.get(x).getPersonCode())){
+					aPerson = personList.get(x);
+					aPerson = person;
+				}
 			}
-
-
+			
 			System.out.println(String.format("%-7s,\n", anInvoice.getInvoiceCode()));	
 
 			//Add all monetary values to totals
@@ -57,8 +64,9 @@ public class InvoiceWriter {
 			TaxesTotal += 0.0;
 			DiscountTotal += 0.0;
 			OverallTotal += 0.0;
-
-		}
+			
+		}		
+		
 		System.out.println(String.format("===================================================================================="));
 		System.out.println(String.format("TOTALS \t\t\t\t\t\t\t\t\t %.2f, \t\t %.2f \t\t %.2f \t\t %.2f \t\t %.2f", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));
 
@@ -91,9 +99,9 @@ public class InvoiceWriter {
 			//Display the details of all products for this invoice
 			System.out.println(String.format("Code \t\t Item \t\t SubTotal \t\t Tax \t\t Total\n"));	
 			for (Product aProduct : anInvoice.getProductList()) {
-				
-				
-				System.out.println(String.format("%s \t\t %s \t\t SubTotal \t\t Tax \t\t Total\n", Iproduct.getProductCode()));
+
+
+				System.out.println(String.format("%s \t\t %s \t\t SubTotal \t\t Tax \t\t Total\n", aProduct.getProductCode()));
 
 			}
 			System.out.println(String.format("SUB-TOTALS \t\t %.2f \t\t %.2f \t\t %.2f\n", SubtotalsTotal, TaxesTotal, OverallTotal));
