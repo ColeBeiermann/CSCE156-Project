@@ -39,24 +39,24 @@ public class InvoiceWriter {
 		for (int x=0; x < invoiceList.size(); x++) {
 			
 			Customer aCustomer = null;
-			for(int y=0; x < customerList.size(); x++) {
+			for(int y=0; y < customerList.size(); y++) {
 				Customer customer = null;
-				if(customerList.get(x).getCustomerCode().equals(invoiceList.get(x).getCustomerCode())){
+				if(customerList.get(y).getCustomerCode().equals(invoiceList.get(x).getCustomerCode())){
 					aCustomer = customerList.get(x);
 					aCustomer = customer;
 				}
 			}
 			
 			Person aPerson = null;
-			for(int y=0; x < personList.size(); x++) {
+			for(int j=0; j < personList.size(); j++) {
 				Person person = null;
-				if(personList.get(x).getPersonCode().equals(invoiceList.get(x).getPersonCode())){
+				if(personList.get(j).getPersonCode().equals(invoiceList.get(x).getPersonCode())){
 					aPerson = personList.get(x);
 					aPerson = person;
 				}
 			}
 			
-			System.out.println(String.format("%-7s,\n", anInvoice.getInvoiceCode()));	
+			System.out.println(String.format("%-7s,\n", invoiceList.get(x).getInvoiceCode()));	
 
 			//Add all monetary values to totals
 			FeesTotal += 0.0;
