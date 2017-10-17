@@ -5,6 +5,9 @@ public abstract class Product {
 	//data members
 	private String productCode;
 	private String productType;
+	int productQuantity;
+	double subtotal;
+	double taxes;
 
 	//Constructor
 	public Product(String productCode, String productType) {
@@ -21,7 +24,22 @@ public abstract class Product {
 		return productType;
 	}
 
-
-
+	public int getProductQuantity() {
+		return productQuantity;
+	}
+	
+	public void setQuantity(int quantity) {
+		this.productQuantity = quantity;
+	}
+	
+	/*
+	public double getSubtotal() {
+		return 0.0;
+	}
+		
+	public double getTaxes() {
+		return 0.0;
+	}
+	*/
 
 }

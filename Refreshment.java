@@ -11,6 +11,8 @@ public class Refreshment extends Product{
 		super(productCode, productType);
 		this.name = name;
 		this.cost = cost;
+		
+		//this.productType = "Refreshment";
 	}
 
 	//getters and setters
@@ -29,5 +31,24 @@ public class Refreshment extends Product{
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-
+	
+	/*
+	@Override
+	public String getProductType() {
+		return productType;
+	}
+	*/
+	
+	//@Override
+	public double getSubtotal() {
+		double subtotal = this.cost * productQuantity;
+		return subtotal;
+	}
+	
+	//@Override
+	public double getTaxes() {
+		double subtotal = this.cost * productQuantity;
+		double taxes = subtotal * 0.04;
+		return taxes;
+	}
 }

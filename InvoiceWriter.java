@@ -1,6 +1,3 @@
-
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,17 +8,11 @@ public class InvoiceWriter {
 	private List<Product> productList;
 	private List<Invoice> invoiceList;
 
-	private double Fees = 0.0;
-	private double Subtotal = 0.0;
-	private double Taxes = 0.0;
-	private double Discount = 0.0;
-	private double Total = 0.0;
-	
-	private double FeesTotal = 0.0;
-	private double SubtotalsTotal = 0.0;
-	private double TaxesTotal = 0.0;
-	private double DiscountTotal = 0.0;
-	private double OverallTotal = 0.0;
+	private double FeesTotal;
+	private double SubtotalsTotal;
+	private double TaxesTotal;
+	private double DiscountTotal;
+	private double OverallTotal;
 
 	public InvoiceWriter(List<Person> personList, List<Customer> customerList, List<Product> productList, 
 			List<Invoice> invoiceList) {
@@ -31,7 +22,6 @@ public class InvoiceWriter {
 		this.invoiceList = invoiceList;		
 	}
 
-/*
 	public void writeSummary() {
 
 
@@ -41,143 +31,128 @@ public class InvoiceWriter {
 				+ "=========================\n"));
 
 		//Headers for Invoice Summary
-		System.out.println(String.format("Invoice \t Customer \t\t Salesperson \t\t Subtotal \t\t Fees \t\t Taxes \t\t Discount \t\t Total"));
+		System.out.println(String.format("%-8s %-36s %-24s %-16s %-16s %-16s %-16s %-16s", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total"));
 
 		//Find the corresponding customer, person, and products given the respective codes
 
-		Invoice anInvoice = null;
 		for (int x=0; x < invoiceList.size(); x++) {
-			
+
 			Customer aCustomer = null;
 			for(int y=0; y < customerList.size(); y++) {
-				Customer customer = null;
+
 				if(customerList.get(y).getCustomerCode().equals(invoiceList.get(x).getCustomerCode())){
-					aCustomer = customerList.get(x);
-					aCustomer = customer;
+					aCustomer = customerList.get(y);
 				}
 			}
-			
+
 			Person aPerson = null;
 			for(int j=0; j < personList.size(); j++) {
-				Person person = null;
 				if(personList.get(j).getPersonCode().equals(invoiceList.get(x).getPersonCode())){
-					aPerson = personList.get(x);
-					aPerson = person;
+					aPerson = personList.get(j);
 				}
 			}
-			
-			if (aCustomer.getType = "S") {
-				Fees = 6.75;
-			}
-			else {
-				Fees = 0.0;
-			}
-			
-			
-			
-			System.out.println(String.format("%s \t %s \t\t %s\n", invoiceList.get(x).getInvoiceCode(), aCustomer.getName(), aPerson.getName()));	
+
+			System.out.println(String.format("%-8s %-28s (%s)%-4s %-24s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n", invoiceList.get(x).getInvoiceCode(), aCustomer.getName(), aCustomer.getType(), "",aPerson.getName(), 0.00, 0.00, 0.00, 0.00, 0.00));	
 
 			//Add all monetary values to totals
-			FeesTotal += Fees;
-			SubtotalsTotal += Subtotal;
-			TaxesTotal += Taxes;
-			DiscountTotal += Discount;
-			OverallTotal += Total;
-			
-		}		
-		
-		System.out.println(String.format("===================================================================================="));
-		System.out.println(String.format("TOTALS \t\t\t\t\t\t\t\t\t %.2f, \t\t %.2f \t\t %.2f \t\t %.2f \t\t %.2f", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));
+			FeesTotal += 0.0;
+			SubtotalsTotal += 0.0;
+			TaxesTotal += 0.0;
+			DiscountTotal += 0.0;
+			OverallTotal += 0.0;
 
+		}		
+
+		System.out.println(String.format("====================================================================================================================================================="));
+		System.out.println(String.format("%-70s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n", "TOTAL", 0.00, 0.00, 0.00, 0.00, 0.00));	
 
 	}
-*/
 
-	public void writeReport() throws FileNotFoundException {		
-		
-		PrintWriter writer = new PrintWriter("InvoiceReport.txt");
-		
+	public void writeReport() {		
+
 		//Begin writing the detailed report of each invoice
 		System.out.println(String.format("Individual Invoice Detail Reports\n"
-									+ "====================================\n"));
-				
-		Invoice anInvoice = null;
+				+ "====================================\n"));
+
+		//For loop to go through each invoice
 		for (int x=0; x < invoiceList.size(); x++) {
-			anInvoice = invoiceList.get(x);
-			
+
 			Customer aCustomer = null;
+
 			for(int y=0; y < customerList.size(); y++) {
-				Customer customer = null;
+
 				if(customerList.get(y).getCustomerCode().equals(invoiceList.get(x).getCustomerCode())){
-					aCustomer = customerList.get(x);
+					aCustomer = customerList.get(y);
 				}
 			}
-			
+
 			Person aPerson = null;
 			for(int j=0; j < personList.size(); j++) {
-				Person person = null;
 				if(personList.get(j).getPersonCode().equals(invoiceList.get(x).getPersonCode())){
-					aPerson = personList.get(x);
+					aPerson = personList.get(j);
 				}
 			}
 
+			System.out.println(String.format("Invoice %-7s\n"
+					+ "======================\n", invoiceList.get(x).getInvoiceCode()));
 
-
-			System.out.println(String.format("Invoice %s\n"
-					+ "======================\n", anInvoice.getInvoiceCode()));
-
-			
-			
-			Address anAddress = aCustomer.getAddress();
 			//Display information regarding the salesperson and the customer
+			Address address = aCustomer.getAddress();
+
 			System.out.println(String.format("Salesperson: %s \n"
 					+ "Customer Info:\n"
 					+ "\t %s (%s)\n"
-					+ "\t [%s] \n", aPerson.getName(), aCustomer.getName(), aCustomer.getCustomerCode(), aCustomer.getType()));
-			System.out.println(String.format("\t %s %s %s %s %s",  anAddress.getStreet(), anAddress.getCity(), anAddress.getState(), anAddress.getZip(), anAddress.getCountry()));
-			System.out.println(String.format("-------------------------"));
+					+ "\t [%s] \n"
+					+ "\t %s", aPerson.getName(),aCustomer.getName(),aCustomer.getCustomerCode(), aCustomer.getType(), aCustomer.getContact().getName()));
+			System.out.println(String.format("\t %s %s %s %s %s",address.getStreet(),address.getCity(),address.getState(),address.getZip(),address.getCountry()));
+			System.out.println(String.format("--------------------------------------------------------"));
 
 
 			//Display the details of all products for this invoice
-			
-			System.out.println(String.format("Code \t\t Item \t\t SubTotal \t\t Tax \t\t Total\n"));	
-			
-			for(Product aProduct : anInvoice.getIProductList()){
-				for(int q=0; q < productList.size(); q++) {
-					Product person = null;
-					if(personList.get(q).getPersonCode().equals(aProduct.getProductCode())){
-						aProduct = productList.get(q);
+			System.out.println(String.format("%-8s %-60s %-16s %-16s %-16s", "Code", "Item", "Subtotal", "Tax", "Total"));
+
+			for (Product aProduct : invoiceList.get(x).getProductList()) {		
+				String type = aProduct.getProductType();
+				//Depending on type, creates the corresponding object of type Product
+				if(type.equals("P")) {
+					ParkingPass pass = (ParkingPass) aProduct;
+					System.out.println(String.format("%-8s %s %s (%d units @ $%.2f/unit)\t\t $%10.2f\t $%10.2f\t $%10.2f\n", 
+							pass.getProductCode(), pass.getProductType(),pass.getTicketCode(),pass.getProductQuantity(),pass.getParkingFee(), pass.getSubtotal(), pass.getTaxes(), 0.00));
+					//OverallTotal = OverallTotal + pass.getTotal();
 				}
+				else if(type.equals("M")) {
+					MovieTicket ticket = (MovieTicket) aProduct;
+					System.out.println(String.format("%-8s %s '%s' @ %-24s \t\t $%10.2f\t $%10.2f\t $%10.2f", 
+							ticket.getProductCode(),ticket.getProductType(),ticket.getMovieName(),ticket.getAddress(), ticket.getSubtotal(), ticket.getTaxes(), 0.00));
+					System.out.println(String.format("%-8s %s (%d units @ $%.2f/unit)\n", "", ticket.getDateTime(), ticket.getProductQuantity(), ticket.getPricePerUnit()));
+					//OverallTotal = OverallTotal + ticket.getTotal();
+				}
+				else if(type.equals("R")) {
+					Refreshment refresh = (Refreshment) aProduct;
+					System.out.println(String.format("%-8s %s (%d units @ $%.2f/unit) \t\t $%10.2f\t $%10.2f\t $%10.2f\n", 
+							refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), refresh.getSubtotal(), refresh.getTaxes(), 0.00));
+					//OverallTotal = OverallTotal + refresh.getTotal();
+				}
+				else if(type.equals("S")) {
+					SeasonPass pass = (SeasonPass) aProduct;
+					System.out.println(String.format("%-8s %s %-30s $%10.2f\t $%10.2f\t $%10.2f", 
+							pass.getProductCode(),pass.getProductType(),pass.getName(), pass.getSubtotal(), pass.getTaxes(), 0.00));
+					System.out.println(String.format("%-8s (%d units @ $%.2f/unit)\n", "", pass.getProductQuantity(), pass.getCost()));
+					//OverallTotal = OverallTotal + pass.getTotal();
+				}
+				
 			}
+			System.out.println(String.format("%-80s $%10.2f\n\n", "TOTAL", 0.00));
 
-			
-			if (aProduct.getProductType().equals("M")) {
-				System.out.println(String.format("%s \t\t %s \t\t %f \t\t $f \t\t $f\n", aProduct.getProductCode()));
-			}
-			if (aProduct.getProductType().equals("P")) {
-				System.out.println(String.format("%s \t\t %s \t\t %f \t\t $f \t\t $f\n", aProduct.getProductCode()));
-			}
-			if (aProduct.getProductType().equals("R")) {
-				
-			}
-			if (aProduct.getProductType().equals("S")) {
-				
-			}
-			
-			}
-			
-			//Print Total Costs for Invoice
-			System.out.println(String.format("SUB-TOTALS \t\t %.2f \t\t %.2f \t\t %.2f\n", SubtotalsTotal, TaxesTotal, OverallTotal));
-			System.out.println(String.format("TOTAL \t\t\t\t\t\t %.2f\n\n", OverallTotal));
-			
 			System.out.println(String.format("Thank you for your purchase!\n\n\n"));
+
+
+			System.out.println(String.format("====================================================="));
+
 		}
-		
-		writer.close();
-		}
 
-		System.out.println(String.format("====================================================="));
-
-
+	}
 }
+
+
 

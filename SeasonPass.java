@@ -14,6 +14,8 @@ public class SeasonPass extends Product {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.cost = cost;
+		
+		//this.productType = "Season Pass";
 	}
 	
 	//Getters and Setters
@@ -42,7 +44,25 @@ public class SeasonPass extends Product {
 		this.cost = cost;
 	}
 	
+	/*
+	@Override
+	public String getProductType() {
+		return productType;
+	}
+	*/
 	
+	//@Override
+	public double getSubtotal() {
+		double subtotal = this.cost * productQuantity;
+		return subtotal;
+	}
+	
+	//@Override
+	public double getTaxes() {
+		double subtotal = this.cost * productQuantity;
+		double taxes = subtotal * 0.04;
+		return taxes;
+	}
 	
 
 }
