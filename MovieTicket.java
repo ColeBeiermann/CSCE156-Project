@@ -77,8 +77,7 @@ public class MovieTicket extends Product {
 	}
 	
 	//@Override
-	public double getTaxes() {
-		double subtotal = this.pricePerUnit * productQuantity;
+	public double getTaxes(double subtotal) {
 		double taxes = subtotal * 0.06;
 		return taxes;
 	}

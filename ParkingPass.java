@@ -45,8 +45,7 @@ public class ParkingPass extends Product{
 	}
 	
 	//@Override
-	public double getTaxes() {
-		double subtotal = this.parkingFee * productQuantity;
+	public double getTaxes(double subtotal) {
 		double taxes = subtotal * 0.04;
 		return taxes;
 	}

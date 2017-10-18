@@ -40,14 +40,13 @@ public class Refreshment extends Product{
 	*/
 	
 	//@Override
-	public double getSubtotal() {
-		double subtotal = this.cost * productQuantity;
+	public double getSubtotal(double discount) {
+		double subtotal = (this.cost * productQuantity) * (1.00 - discount);
 		return subtotal;
 	}
 	
 	//@Override
-	public double getTaxes() {
-		double subtotal = this.cost * productQuantity;
+	public double getTaxes(double subtotal) {
 		double taxes = subtotal * 0.04;
 		return taxes;
 	}
