@@ -1,24 +1,12 @@
 # CSCE156-Project Things to Do:
 
-DONE:
+- Reallign results and numbers evenly
 
--Create Invoices Test Case
-
-
-
-MOSTLY DONE:
-
--Create Invoice class
-
--Read the data and create Invoice objects in "FlatFileReader.java"
-
-
-
-NEEDS TO BE DONE:
-
--Implement an output writer in proper formats for the invoices in "DataConverter.java". Create a writer method
+- Calculate special cases for MovieTickets and ParkingPass
+   (MovieTickets) Tuesday and Thursday- 7% off
+   (ParkingPass) If pass has corresponding ticket code or season ticket, pass cost is waived
    
+- Output to txt file instead of displaying result
 
-
-
+- Use encapsulation, abstraction, polymorphism, inheritance, and interface
 
