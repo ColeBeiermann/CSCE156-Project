@@ -63,11 +63,12 @@ public class MovieTicket extends Product {
 		this.pricePerUnit = pricePerUnit;
 	}
 	
-	
+	/*
 	@Override
 	public String getProductType() {
 		return productType;
 	}
+	*/
 	
 	//@Override
 	public double getSubtotal() {
@@ -78,7 +79,7 @@ public class MovieTicket extends Product {
 	//@Override
 	public double getTaxes() {
 		double subtotal = this.pricePerUnit * productQuantity;
-		double taxes = subtotal * 0.04;
+		double taxes = subtotal * 0.06;
 		return taxes;
 	}
 

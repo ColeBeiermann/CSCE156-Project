@@ -51,20 +51,71 @@ public class InvoiceWriter {
 					aPerson = personList.get(j);
 				}
 			}
+			
+			//////////////////////////////////////////////////////
+			
+			
+			
+			double Fees = 0.0;
+			double Subtotals = 0.0;
+			double Taxes = 0.0;
+			double Discount = 0.0;
+			double Overall = 0.0;
+			
+			
+			for (Product aProduct : invoiceList.get(x).getProductList()) {		
+				String type = aProduct.getProductType();
+				
+				
+				
+				
+				if(type.equals("P")) {
+					ParkingPass pass = (ParkingPass) aProduct;
+					Subtotals += pass.getSubtotal();
+					Taxes += pass.getTaxes();
+				}
+				else if(type.equals("M")) {
+					MovieTicket ticket = (MovieTicket) aProduct;
+					Subtotals += ticket.getSubtotal();
+					Taxes += ticket.getTaxes();
+				}
+				else if(type.equals("R")) {
+					Refreshment refresh = (Refreshment) aProduct;
+					Subtotals += refresh.getSubtotal();
+					Taxes += refresh.getTaxes();
+				}
+				else if(type.equals("S")) {
+					SeasonPass pass = (SeasonPass) aProduct;
+					Subtotals += pass.getSubtotal();
+					Taxes += pass.getTaxes();
+				}
+			}
+			
+			
+			Fees = aCustomer.getFees();
+			Discount = aCustomer.getDisount(Subtotals, Taxes);
+			Overall = Subtotals + Fees + Taxes + Discount;
+				
+			//////////////////////////////////////////////////////
+			
+			
+			
+			
 
-			System.out.println(String.format("%-8s %-28s (%s)%-4s %-24s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n", invoiceList.get(x).getInvoiceCode(), aCustomer.getName(), aCustomer.getType(), "",aPerson.getName(), 0.00, 0.00, 0.00, 0.00, 0.00));	
+			System.out.println(String.format("%-8s %-28s (%s)%-4s %-24s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n",
+					invoiceList.get(x).getInvoiceCode(), aCustomer.getName(), aCustomer.getType(), "",aPerson.getName(), Subtotals, Fees, Taxes, Discount, Overall));	
 
 			//Add all monetary values to totals
-			FeesTotal += 0.0;
-			SubtotalsTotal += 0.0;
-			TaxesTotal += 0.0;
-			DiscountTotal += 0.0;
-			OverallTotal += 0.0;
+			FeesTotal += Fees;
+			SubtotalsTotal += Subtotals;
+			TaxesTotal += Taxes;
+			DiscountTotal += Discount;
+			OverallTotal += Overall;
 
 		}		
 
 		System.out.println(String.format("====================================================================================================================================================="));
-		System.out.println(String.format("%-70s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n", "TOTAL", 0.00, 0.00, 0.00, 0.00, 0.00));	
+		System.out.println(String.format("%-70s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n\n", "TOTAL", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));	
 
 	}
 
@@ -141,6 +192,11 @@ public class InvoiceWriter {
 					//OverallTotal = OverallTotal + pass.getTotal();
 				}
 				
+			}
+			System.out.println(String.format("%-60s $%10.2f \t $%10.2f \t $%10.2f", "SUB-TOTALS", 0.00, 0.00, 0.00));
+			if (aCustomer.getType().equals("S")) {
+				System.out.println(String.format("%-80s $%10.2f", "DISCOUNT (8% STUDENT & NO TAX)", 0.00));
+				System.out.println(String.format("%-80s $%10.2f", "ADDITIONAL FEE (Student)", 0.00));
 			}
 			System.out.println(String.format("%-80s $%10.2f\n\n", "TOTAL", 0.00));
 

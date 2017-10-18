@@ -60,7 +60,7 @@ public class SeasonPass extends Product {
 	//@Override
 	public double getTaxes() {
 		double subtotal = this.cost * productQuantity;
-		double taxes = subtotal * 0.04;
+		double taxes = subtotal * 0.06;
 		return taxes;
 	}
 	

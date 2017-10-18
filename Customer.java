@@ -57,7 +57,25 @@ public class Customer{
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public double getFees() {
+		if (this.type.equals("S")) {
+			return 6.75;
+		}
+		else {
+			return 0.0;
+		}
+	}
 
+	public double getDisount(double subtotal, double taxes) {
+		if (this.type.equals("S")) {
+			double discount = -(.08*subtotal) - taxes;
+			return discount;
+		}
+		else {
+			return 0.0;
+		}
+	}
 	
 
 }
