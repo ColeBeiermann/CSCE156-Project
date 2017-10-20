@@ -221,11 +221,11 @@ public class InvoiceWriter {
 					total = subtotal + taxes;
 
 					if (movieTrue == 1) {
-						print.printf("%-8s %10s (%d units @ $%.2f/unit with 5%% off)\t $%10.2f\t $%10.2f\t $%10.2f\n", 
+						print.printf("%-8s %-21s (%-2d units @ $%5.2f/unit with 5%% off)\t $%8.2f\t\t $%5.2f\t\t $%5.2f\n", 
 								refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), subtotal, taxes, total);
 					}
 					else {
-						print.printf("%-8s %10s (%d units @ $%.2f/unit) \t\t $%10.2f\t $%10.2f\t $%10.2f\n", 
+						print.printf("%-8s %-19s (%-2d units @ $%5.2f/unit)\t\t\t\t $%8.2f\t\t $%5.2f\t\t $%5.2f\n", 
 								refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), subtotal, taxes, total);
 					}
 
@@ -236,7 +236,7 @@ public class InvoiceWriter {
 					taxes += pass.getTaxes();
 					total = subtotal + taxes;
 
-					print.printf("%-8s %s %-20s \t\t\t $%10.2f\t $%10.2f\t $%10.2f\n", 
+					print.printf("%-8s %-15s %-40s \t $%8.2f\t\t $%5.2f\t $%7.2f\n", 
 							pass.getProductCode(),pass.getTypeStr(),pass.getName(), subtotal, taxes, total);
 					print.printf("%-8s (%d units @ $%.2f/unit + $8 fee/unit)\n", "", pass.getProductQuantity(), pass.getCost());
 
