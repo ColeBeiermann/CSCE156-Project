@@ -16,6 +16,7 @@ public class MovieTicket extends Product {
 		this.movieName = movieName;
 		this.screenNo = screenNo;
 		this.pricePerUnit = pricePerUnit;
+		this.address = address;
 	}
 
 	//Getters and Setters

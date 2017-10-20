@@ -65,7 +65,7 @@ public class InvoiceWriter {
 			double Overall = 0.0;
 
 
-			for (Product aProduct : invoiceList.get(x).getProductList()) {		
+			for (Product aProduct : invoiceList.get(x).getProductList()) {	
 				String type = aProduct.getProductType();
 
 				int movieTrue = 0;
@@ -177,7 +177,9 @@ public class InvoiceWriter {
 
 			for (Product aProduct : invoiceList.get(x).getProductList()) {		
 				String type = aProduct.getProductType();
-
+				
+			
+				
 				double subtotal = 0.0;
 				double taxes = 0.0;
 				double total = 0.0;
@@ -194,13 +196,19 @@ public class InvoiceWriter {
 
 				}
 				else if(type.equals("M")) {
-					MovieTicket ticket = (MovieTicket) aProduct;
+					MovieTicket aTicket = null;
+					for(int j=0; j < productList.size(); j++) {
+						if(productList.get(j).getProductCode().equals(aProduct.getProductCode())){
+							aTicket = (MovieTicket)productList.get(j);
+						}
+					}
+					MovieTicket ticket = aTicket;
 					subtotal = ticket.getSubtotal();
 					taxes += ticket.getTaxes();
 					total = subtotal + taxes;
 
 					print.printf("%-8s %-13s %-40s \t $%8.2f\t\t $%8.2f\t\t $%8.2f\n",
-							ticket.getProductCode(),ticket.getTypeStr(),"'" + ticket.getMovieName() +" @" + ticket.getAddress() +"'", subtotal, taxes, total);
+							ticket.getProductCode(),ticket.getTypeStr(),"'" + ticket.getMovieName() +" @ " + ticket.getAddress().getStreet() + "'", subtotal, taxes, total);
 					print.printf("%-8s %s (%d units @ $%.2f/unit)\n", "", ticket.getDateTime(), ticket.getProductQuantity(), ticket.getPricePerUnit());
 
 
