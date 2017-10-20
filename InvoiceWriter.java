@@ -113,7 +113,7 @@ public class InvoiceWriter {
 
 
 
-			print.printf("%-8s %-36s %-22s $%10.2f\t $%10.2f\t $%10.2f\t $%12.2f\t $%9.2f\n",
+			print.printf("%-8s %-36s %-22s \t $%10.2f\t $%10.2f\t $%10.2f\t $%12.2f\t $%9.2f\n",
 					invoiceList.get(x).getInvoiceCode(),  aCustomer.getName() + "[" + aCustomer.getTypeStr() + "]",aPerson.getName(), Subtotals, Fees, Taxes, Discount, Overall);	
 
 			//Add all monetary values to totals
@@ -126,7 +126,7 @@ public class InvoiceWriter {
 		}		
 
 		print.println(String.format("====================================================================================================================================================="));
-		print.println(String.format("%-68s $%10.2f\t $%10.2f\t $%10.2f\t $%12.2f\t $%9.2f\n\n", "TOTAL", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));	
+		print.println(String.format("%-68s \t $%10.2f\t $%10.2f\t $%10.2f\t $%12.2f\t $%9.2f\n\n", "TOTAL", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));	
 
 	
 
@@ -173,7 +173,7 @@ public class InvoiceWriter {
 
 
 			//Display the details of all products for this invoice
-			print.printf("%-8s %-60s %8s\t\t %5s\t\t %5s\n", "Code", "Item", "Subtotal", "Tax", "Total");
+			print.printf("%-8s %-60s %8s\t\t %8s\t\t %8s\n", "Code", "Item", "Subtotal", "Tax", "Total");
 
 			for (Product aProduct : invoiceList.get(x).getProductList()) {		
 				String type = aProduct.getProductType();
@@ -189,7 +189,7 @@ public class InvoiceWriter {
 					taxes += pass.getTaxes();
 					total = subtotal + taxes;
 
-					print.printf("%-8s %-13s %-5s (%-2d units @ $%4.2f/unit)\t\t\t\t $%8.2f\t\t $%5.2f\t\t $%5.2f\n", 
+					print.printf("%-8s %-13s %-5s (%-2d units @ $%4.2f/unit)\t\t\t\t $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
 							pass.getProductCode(), pass.getTypeStr(),pass.getTicketCode(),pass.getProductQuantity(),pass.getParkingFee(), subtotal, taxes, total);
 
 				}
@@ -199,7 +199,7 @@ public class InvoiceWriter {
 					taxes += ticket.getTaxes();
 					total = subtotal + taxes;
 
-					print.printf("%-8s %-13s %-40s \t $%8.2f\t\t $%5.2f\t\t $%5.2f\n",
+					print.printf("%-8s %-13s %-40s \t $%8.2f\t\t $%8.2f\t\t $%8.2f\n",
 							ticket.getProductCode(),ticket.getTypeStr(),"'" + ticket.getMovieName() +" @" + ticket.getAddress() +"'", subtotal, taxes, total);
 					print.printf("%-8s %s (%d units @ $%.2f/unit)\n", "", ticket.getDateTime(), ticket.getProductQuantity(), ticket.getPricePerUnit());
 
@@ -221,11 +221,11 @@ public class InvoiceWriter {
 					total = subtotal + taxes;
 
 					if (movieTrue == 1) {
-						print.printf("%-8s %-21s (%-2d units @ $%5.2f/unit with 5%% off)\t $%8.2f\t\t $%5.2f\t\t $%5.2f\n", 
+						print.printf("%-8s %-19s (%-2d units @ $%5.2f/unit with 5%% off)\t $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
 								refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), subtotal, taxes, total);
 					}
 					else {
-						print.printf("%-8s %-19s (%-2d units @ $%5.2f/unit)\t\t\t\t $%8.2f\t\t $%5.2f\t\t $%5.2f\n", 
+						print.printf("%-8s %-19s (%-2d units @ $%5.2f/unit)\t\t\t\t $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
 								refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), subtotal, taxes, total);
 					}
 
@@ -236,7 +236,7 @@ public class InvoiceWriter {
 					taxes += pass.getTaxes();
 					total = subtotal + taxes;
 
-					print.printf("%-8s %-15s %-40s \t $%8.2f\t\t $%5.2f\t $%7.2f\n", 
+					print.printf("%-8s %-15s %-40s \t $%8.2f \t\t $%8.2f \t\t $%8.2f\n", 
 							pass.getProductCode(),pass.getTypeStr(),pass.getName(), subtotal, taxes, total);
 					print.printf("%-8s (%d units @ $%.2f/unit + $8 fee/unit)\n", "", pass.getProductQuantity(), pass.getCost());
 
@@ -248,16 +248,16 @@ public class InvoiceWriter {
 
 
 			}
-			print.printf("\t\t\t\t\t\t\t\t=============================================\n\n");
-			print.println(String.format("%-60s \t $%10.2f \t $%10.2f \t $%10.2f", "SUB-TOTALS", SubtotalsTotal, TaxesTotal, OverallTotal));
+			print.printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t=============================================\n\n");
+			print.println(String.format("%-60s \t\t $%8.2f \t\t $%8.2f \t\t $%8.2f", "SUB-TOTALS", SubtotalsTotal, TaxesTotal, OverallTotal));
 			if (aCustomer.getType().equals("S")) {
 				double discount = -((.08 * SubtotalsTotal) - TaxesTotal);
-				print.printf("%-80s \t\t $%10.2f\n", "DISCOUNT (8% STUDENT & NO TAX)", discount);
+				print.printf("%-80s \t\t\t\t\t $%8.2f\n", "DISCOUNT (8% STUDENT & NO TAX)", discount);
 				double fee = 6.75;
-				print.printf("%-80s \t\t $%10.2f\n", "ADDITIONAL FEE (Student)", fee);
+				print.printf("%-80s \t\t\t\t\t $%8.2f\n", "ADDITIONAL FEE (Student)", fee);
 				OverallTotal += (fee - discount);
 			}
-			print.printf("%-80s \t\t $%10.2f\n\n", "TOTAL", OverallTotal);
+			print.printf("%-80s \t\t\t\t\t $%8.2f\n\n", "TOTAL", OverallTotal);
 
 			print.printf("Thank you for your purchase!\n\n\n");
 
