@@ -1,5 +1,7 @@
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
+
 
 public class InvoiceWriter {
 
@@ -7,12 +9,6 @@ public class InvoiceWriter {
 	private List<Customer> customerList;
 	private List<Product> productList;
 	private List<Invoice> invoiceList;
-
-	private double FeesTotal;
-	private double SubtotalsTotal;
-	private double TaxesTotal;
-	private double DiscountTotal;
-	private double OverallTotal;
 
 	public InvoiceWriter(List<Person> personList, List<Customer> customerList, List<Product> productList, 
 			List<Invoice> invoiceList) {
@@ -22,16 +18,23 @@ public class InvoiceWriter {
 		this.invoiceList = invoiceList;		
 	}
 
-	public void writeSummary() {
+	public void writeSummary() throws FileNotFoundException {
 
+		PrintWriter print = new PrintWriter("data/output.txt");
+		
+		double FeesTotal = 0.0;
+		double SubtotalsTotal = 0.0;
+		double TaxesTotal = 0.0;
+		double DiscountTotal = 0.0;
+		double OverallTotal = 0.0;
 
 		//Begin writing the summary of all invoices
-		System.out.println(String.format("=========================\n"
+		print.println(String.format("=========================\n"
 				+ "Executive Summary Report\n"
 				+ "=========================\n"));
 
 		//Headers for Invoice Summary
-		System.out.println(String.format("%-8s %-36s %-24s %-16s %-16s %-16s %-16s %-16s", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total"));
+		print.println(String.format("%-8s %-36s %-24s %-12s\t %-12s\t %-12s\t %-12s\t %-12s", "Invoice", "Customer", "Salesperson", "Subtotal", "Fees", "Taxes", "Discount", "Total"));
 
 		//Find the corresponding customer, person, and products given the respective codes
 
@@ -51,68 +54,68 @@ public class InvoiceWriter {
 					aPerson = personList.get(j);
 				}
 			}
-			
+
 			//////////////////////////////////////////////////////
-			
-			
-			
+
+
+
 			double Fees = 0.0;
 			double Subtotals = 0.0;
 			double Taxes = 0.0;
 			double Discount = 0.0;
 			double Overall = 0.0;
-			
-			
-			for (Product aProduct : invoiceList.get(x).getProductList()) {		
+
+
+			for (Product aProduct : invoiceList.get(x).getProductList()) {	
 				String type = aProduct.getProductType();
-				
+
 				int movieTrue = 0;
 				for (Product bProduct : invoiceList.get(x).getProductList()) {
 					if (bProduct.getProductType().equals("M")){
 						movieTrue = 1;
 					}
 				}
-				
-				
+
+
 				if(type.equals("P")) {
 					ParkingPass pass = (ParkingPass) aProduct;
 					Subtotals += pass.getSubtotal();
-					Taxes += pass.getTaxes(pass.getSubtotal());
+					Taxes += pass.getTaxes();
 				}
 				else if(type.equals("M")) {
 					MovieTicket ticket = (MovieTicket) aProduct;
 					Subtotals += ticket.getSubtotal();
-					Taxes += ticket.getTaxes(ticket.getSubtotal());
+					Taxes += ticket.getTaxes();
 				}
 				else if(type.equals("R")) {
 					Refreshment refresh = (Refreshment) aProduct;
-					double refreshmentDiscount = 0.0;
+					refresh.setDiscount(0.0);
 					if (movieTrue == 1) {
-					refreshmentDiscount = 0.5;
+						refresh.setDiscount(0.5);
 					}
-					Subtotals += refresh.getSubtotal(refreshmentDiscount);
-					Taxes += refresh.getTaxes(refresh.getSubtotal(refreshmentDiscount));
+					Subtotals += refresh.getSubtotal();
+					Taxes += refresh.getTaxes();
 				}
 				else if(type.equals("S")) {
 					SeasonPass pass = (SeasonPass) aProduct;
-					Subtotals += pass.getSubtotal(8.0);
-					Taxes += pass.getTaxes(pass.getSubtotal(8.0));
+					Subtotals += pass.getSubtotal();
+					Taxes += pass.getTaxes();
 				}
 			}
-			
-			
+
+
 			Fees = aCustomer.getFees();
 			Discount = aCustomer.getDisount(Subtotals, Taxes);
 			Overall = Subtotals + Fees + Taxes + Discount;
-				
-			//////////////////////////////////////////////////////
-			
-			
-			
-			
 
-			System.out.println(String.format("%-8s %-28s (%s)%-4s %-24s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n",
-					invoiceList.get(x).getInvoiceCode(), aCustomer.getName(), aCustomer.getType(), "",aPerson.getName(), Subtotals, Fees, Taxes, Discount, Overall));	
+			//////////////////////////////////////////////////////
+
+
+
+
+
+			print.printf("%-8s %-36s %-22s \t $%11.2f\t $%11.2f\t $%11.2f\t $%11.2f\t $%11.2f\n",
+					invoiceList.get(x).getInvoiceCode(),  aCustomer.getName() + "[" + aCustomer.getTypeStr() + "]",aPerson.getName(), Subtotals, Fees, Taxes, Discount, Overall);	
 
 			//Add all monetary values to totals
 			FeesTotal += Fees;
@@ -123,20 +126,22 @@ public class InvoiceWriter {
 
 		}		
 
-		System.out.println(String.format("====================================================================================================================================================="));
-		System.out.println(String.format("%-70s $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\t $%10.2f\n\n", "TOTAL", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));	
+		print.println(String.format("====================================================================================================================================================="));
+		print.println(String.format("%-68s \t $%11.2f\t $%11.2f\t $%11.2f\t $%11.2f\t $%11.2f\n\n", "TOTAL", SubtotalsTotal, FeesTotal, TaxesTotal, DiscountTotal, OverallTotal));	
 
-	}
-
-	public void writeReport() {		
+	
 
 		//Begin writing the detailed report of each invoice
-		System.out.println(String.format("Individual Invoice Detail Reports\n"
+		print.println(String.format("Individual Invoice Detail Reports\n"
 				+ "====================================\n"));
 
 		//For loop to go through each invoice
 		for (int x=0; x < invoiceList.size(); x++) {
 
+			SubtotalsTotal = 0.0;
+			TaxesTotal = 0.0;
+			OverallTotal = 0.0;
+			
 			Customer aCustomer = null;
 
 			for(int y=0; y < customerList.size(); y++) {
@@ -153,52 +158,110 @@ public class InvoiceWriter {
 				}
 			}
 
-			System.out.println(String.format("Invoice %-7s\n"
+			print.println(String.format("Invoice %-7s\n"
 					+ "======================\n", invoiceList.get(x).getInvoiceCode()));
 
 			//Display information regarding the salesperson and the customer
 			Address address = aCustomer.getAddress();
 
-			System.out.println(String.format("Salesperson: %s \n"
+			print.println(String.format("Salesperson: %s \n"
 					+ "Customer Info:\n"
 					+ "\t %s (%s)\n"
 					+ "\t [%s] \n"
-					+ "\t %s", aPerson.getName(),aCustomer.getName(),aCustomer.getCustomerCode(), aCustomer.getType(), aCustomer.getContact().getName()));
-			System.out.println(String.format("\t %s %s %s %s %s",address.getStreet(),address.getCity(),address.getState(),address.getZip(),address.getCountry()));
-			System.out.println(String.format("--------------------------------------------------------"));
+					+ "\t %s", aPerson.getName(),aCustomer.getName(),aCustomer.getCustomerCode(), aCustomer.getTypeStr(), aCustomer.getContact().getName()));
+			print.println(String.format("\t %s %s %s %s %s",address.getStreet(),address.getCity(),address.getState(),address.getZip(),address.getCountry()));
+			print.println(String.format("--------------------------------------------------------"));
 
 
 			//Display the details of all products for this invoice
-			System.out.println(String.format("%-8s %-60s %-16s %-16s %-16s", "Code", "Item", "Subtotal", "Tax", "Total"));
+			print.printf("%-8s %-60s %-10s\t\t %-10s\t\t %-10s\n", "Code", "Item", "Subtotal", "Tax", "Total");
 
 			for (Product aProduct : invoiceList.get(x).getProductList()) {		
 				String type = aProduct.getProductType();
 				
+			
+				
 				double subtotal = 0.0;
 				double taxes = 0.0;
 				double total = 0.0;
-				
+
 				//Depending on type, creates the corresponding object of type Product
 				if(type.equals("P")) {
 					ParkingPass pass = (ParkingPass) aProduct;
-					subtotal = pass.getSubtotal();
-					taxes += pass.getTaxes(pass.getSubtotal());
-					total = subtotal + taxes;
+					int ParkingDiscount = 0;
 					
-					System.out.println(String.format("%-8s %s %s (%d units @ $%.2f/unit)\t\t $%10.2f\t $%10.2f\t $%10.2f\n", 
-							pass.getProductCode(), pass.getProductType(),pass.getTicketCode(),pass.getProductQuantity(),pass.getParkingFee(), subtotal, taxes, total));
+					String PassTicketCode = pass.getTicketCode();
+					if(PassTicketCode == null) {
+						pass.setDiscount(ParkingDiscount);
+						subtotal = pass.getSubtotal();
+						taxes += pass.getTaxes();
+						total = subtotal + taxes;
+						print.printf("%-8s %-60s $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
+								 pass.getProductCode(), pass.getTypeStr() + " (" + pass.getProductQuantity() + " units @ $" + String.format("%.2f", pass.getParkingFee()) + "/unit)", subtotal, taxes, total);
+					}
+					else {
+						for (Product bProduct : invoiceList.get(x).getProductList()) {
+							if ((bProduct.getProductType()).equals("M")){
+								MovieTicket ticketB = (MovieTicket) bProduct;
+								if(ticketB.getProductCode().equals(PassTicketCode)) {
+									if (ticketB.getProductQuantity() > pass.getProductQuantity()) {
+										ParkingDiscount = pass.getProductQuantity();
+									}
+									else if (ticketB.getProductQuantity() <= pass.getProductQuantity()){
+										ParkingDiscount = ticketB.getProductQuantity();
+									}
+								}
+							}
+							else if ((bProduct.getProductType()).equals("S")) {
+								SeasonPass seasonB = (SeasonPass) bProduct;
+								if(seasonB.getProductCode().equals(PassTicketCode)) {
+									if (seasonB.getProductQuantity() > pass.getProductQuantity()) {
+										ParkingDiscount = pass.getProductQuantity();
+									}
+									else if (seasonB.getProductQuantity() <= pass.getProductQuantity()) {
+										ParkingDiscount = seasonB.getProductQuantity();
+									}
+									print.printf("Found it!!!!!\n\n");
+								}
+							}
+						}
+						pass.setDiscount(ParkingDiscount);
+						subtotal = pass.getSubtotal();
+						taxes += pass.getTaxes();
+						total = subtotal + taxes;
+						
+						print.printf("%-8s %-60s $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
+								 pass.getProductCode(), pass.getTypeStr() + " " +pass.getTicketCode() +" (" + pass.getProductQuantity() + " units @ $" + String.format("%.2f", pass.getParkingFee()) + "/unit with " + ParkingDiscount + " free)", subtotal, taxes, total);
+					}
+					
 					
 				}
 				else if(type.equals("M")) {
-					MovieTicket ticket = (MovieTicket) aProduct;
+					MovieTicket aTicket = null;
+					for(int j=0; j < productList.size(); j++) {
+						if(productList.get(j).getProductCode().equals(aProduct.getProductCode())){
+							aTicket = (MovieTicket)productList.get(j);
+						}
+					}
+					MovieTicket ticket = aTicket;
+					double movieDiscount = 0.0;
+					int dayOfWeek = ticket.checkDate();
+					if(dayOfWeek == 5 || dayOfWeek == 7) {
+						movieDiscount = .07;
+					}
+					ticket.setDiscout(movieDiscount);
 					subtotal = ticket.getSubtotal();
-					taxes += ticket.getTaxes(ticket.getSubtotal());
+					taxes += ticket.getTaxes();
 					total = subtotal + taxes;
 					
-					System.out.println(String.format("%-8s %s '%s' @ %-24s \t\t $%10.2f\t $%10.2f\t $%10.2f", 
-							ticket.getProductCode(),ticket.getProductType(),ticket.getMovieName(),ticket.getAddress(), subtotal, taxes, total));
-					System.out.println(String.format("%-8s %s (%d units @ $%.2f/unit)\n", "", ticket.getDateTime(), ticket.getProductQuantity(), ticket.getPricePerUnit()));
-					
+					print.printf("%-8s %-60s $%8.2f\t\t $%8.2f\t\t $%8.2f\n",
+							ticket.getProductCode(),ticket.getTypeStr() + " '" + ticket.getMovieName() + "' @ " + ticket.getAddress().getStreet(), subtotal, taxes, total);
+					if(movieDiscount == .07) {
+						print.printf("%-8s %s (%d units @ $%.2f/unit - %-14s)\n", "", ticket.getDateTime(), ticket.getProductQuantity(), ticket.getPricePerUnit(), "Tue/Thu 7% off");
+					}
+					else {
+						print.printf("%-8s %s (%d units @ $%.2f/unit)\n", "", ticket.getDateTime(), ticket.getProductQuantity(), ticket.getPricePerUnit());
+						}
 
 				}
 				else if(type.equals("R")) {
@@ -210,57 +273,65 @@ public class InvoiceWriter {
 							refreshmentDiscount = .05;
 						}
 					}
-					
 					Refreshment refresh = (Refreshment) aProduct;
-					subtotal = refresh.getSubtotal(refreshmentDiscount);
-					taxes += refresh.getTaxes(refresh.getSubtotal(refreshmentDiscount));
+					refresh.setDiscount(refreshmentDiscount);
+					subtotal = refresh.getSubtotal();
+					taxes += refresh.getTaxes();
 					total = subtotal + taxes;
-					
+
 					if (movieTrue == 1) {
-					System.out.println(String.format("%-8s %s (%d units @ $%.2f/unit %-11s) \t\t $%10.2f\t $%10.2f\t $%10.2f\n", 
-						refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), "with 5% off", subtotal, taxes, total));
-						}
-					else {
-					System.out.println(String.format("%-8s %s (%d units @ $%.2f/unit) \t\t $%10.2f\t $%10.2f\t $%10.2f\n", 
-							refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), subtotal, taxes, total));
-					}
+						//print.printf("%-8s %-19s (%-2d units @ $%5.2f/unit with 5%% off)\t $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
+								//refresh.getProductCode(),refresh.getName(), refresh.getProductQuantity(),refresh.getCost(), subtotal, taxes, total);
 					
+						print.printf("%-8s %-60s $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
+								refresh.getProductCode(),refresh.getName() + " (" + refresh.getProductQuantity() + " units @ $" + String.format("%.2f", refresh.getCost()) + " with 5% off)", subtotal, taxes, total);
+					
+					
+					}
+					else {
+						print.printf("%-8s %-60s $%8.2f\t\t $%8.2f\t\t $%8.2f\n", 
+								refresh.getProductCode(),refresh.getName() + " (" + refresh.getProductQuantity() + " units @ $" + refresh.getCost() + ")", subtotal, taxes, total);
+					}
+
 				}
 				else if(type.equals("S")) {
 					SeasonPass pass = (SeasonPass) aProduct;
-					subtotal = pass.getSubtotal(8.0);
-					taxes += pass.getTaxes(pass.getSubtotal(8.0));
+					subtotal = pass.getSubtotal();
+					taxes += pass.getTaxes();
 					total = subtotal + taxes;
-					
-					System.out.println(String.format("%-8s %s %-30s $%10.2f\t $%10.2f\t $%10.2f", 
-							pass.getProductCode(),pass.getProductType(),pass.getName(), subtotal, taxes, total));
-					System.out.println(String.format("%-8s (%d units @ $%.2f/unit + $8 fee/unit)\n", "", pass.getProductQuantity(), pass.getCost()));
-					
+
+					print.printf("%-8s %-60s $%8.2f \t\t $%8.2f \t\t $%8.2f\n", 
+							pass.getProductCode(),pass.getTypeStr() + " - " + pass.getName(), subtotal, taxes, total);
+					print.printf("%-8s (%d units @ $%.2f/unit + $8 fee/unit)\n", "", pass.getProductQuantity(), pass.getCost());
+
 				}
-				
+
 				SubtotalsTotal += subtotal;
 				TaxesTotal += taxes;
 				OverallTotal += total;
-				
-				
+
+
 			}
-			System.out.println(String.format("%-60s $%10.2f \t $%10.2f \t $%10.2f", "SUB-TOTALS", SubtotalsTotal, TaxesTotal, OverallTotal));
+			print.printf("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t=============================================\n\n");
+			print.println(String.format("%-68s  $%8.2f \t\t $%8.2f \t\t $%8.2f", "SUB-TOTALS", SubtotalsTotal, TaxesTotal, OverallTotal));
 			if (aCustomer.getType().equals("S")) {
-				double discount = -((.08 * SubtotalsTotal) - TaxesTotal);
-				System.out.println(String.format("%-80s $%10.2f", "DISCOUNT (8% STUDENT & NO TAX)", discount));
+				double discount = (-(.08 * SubtotalsTotal) - TaxesTotal);
+				print.printf("%-102s $%8.2f\n", "DISCOUNT (8% STUDENT & NO TAX)", discount);
 				double fee = 6.75;
-				System.out.println(String.format("%-80s $%10.2f", "ADDITIONAL FEE (Student)", fee));
-				OverallTotal += (fee - discount);
+				print.printf("%-102s $%8.2f\n", "ADDITIONAL FEE (Student)", fee);
+				OverallTotal += (fee + discount);
 			}
-			System.out.println(String.format("%-80s $%10.2f\n\n", "TOTAL", OverallTotal));
+			print.printf("%-102s $%8.2f\n\n", "TOTAL", OverallTotal);
 
-			System.out.println(String.format("Thank you for your purchase!\n\n\n"));
+			print.printf("Thank you for your purchase!\n\n\n");
 
 
-			System.out.println(String.format("====================================================="));
+
 
 		}
-
+		print.println(String.format("======================================================================================================================"));
+		
+		print.close();
 	}
 }
 

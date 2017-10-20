@@ -5,6 +5,8 @@ public class Refreshment extends Product{
 	//data members
 	private String name;
 	private double cost;
+	private double discount;
+	private double taxes;
 	
 	//constructor
 	public Refreshment(String productCode, String productType, String name, double cost) {
@@ -12,7 +14,6 @@ public class Refreshment extends Product{
 		this.name = name;
 		this.cost = cost;
 		
-		//this.productType = "Refreshment";
 	}
 
 	//getters and setters
@@ -31,23 +32,24 @@ public class Refreshment extends Product{
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-	
-	/*
-	@Override
-	public String getProductType() {
-		return productType;
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
-	*/
 	
-	//@Override
-	public double getSubtotal(double discount) {
+	@Override
+	public double getSubtotal() {
 		double subtotal = (this.cost * productQuantity) * (1.00 - discount);
 		return subtotal;
 	}
 	
-	//@Override
-	public double getTaxes(double subtotal) {
-		double taxes = subtotal * 0.04;
+	@Override
+	public double getTaxes() {
+		taxes = (this.cost * productQuantity) * (1.00 - discount) * 0.04;
 		return taxes;
+	}
+
+	@Override
+	public String getTypeStr() {
+		return "Refreshment";
 	}
 }

@@ -32,14 +32,10 @@ public abstract class Product {
 		this.productQuantity = quantity;
 	}
 	
-	/*
-	public double getSubtotal() {
-		return 0.0;
-	}
+	public abstract String getTypeStr();	
+	
+	public abstract double getSubtotal();
 		
-	public double getTaxes() {
-		return 0.0;
-	}
-	*/
+	public abstract double getTaxes();
 
 }

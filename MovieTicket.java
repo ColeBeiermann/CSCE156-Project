@@ -1,3 +1,5 @@
+import java.util.Calendar;
+
 //This class creates a MovieTicket object of type product
 public class MovieTicket extends Product {
 
@@ -7,7 +9,7 @@ public class MovieTicket extends Product {
 	private String movieName;
 	private String screenNo;
 	private double pricePerUnit;
-	private String productType;
+	private double discount;
 
 	//Constructor
 	public MovieTicket(String productCode, String productType, String dateTime, Address address, String movieName,
@@ -17,9 +19,7 @@ public class MovieTicket extends Product {
 		this.movieName = movieName;
 		this.screenNo = screenNo;
 		this.pricePerUnit = pricePerUnit;
-		this.productType = "MovieTicket";
-		
-		//this.productType = "Movie Ticket";
+		this.address = address;
 	}
 
 	//Getters and Setters
@@ -63,22 +63,44 @@ public class MovieTicket extends Product {
 		this.pricePerUnit = pricePerUnit;
 	}
 	
-	/*
-	@Override
-	public String getProductType() {
-		return productType;
+	public void setDiscout(double discount) {
+		this.discount = discount;
 	}
-	*/
 	
-	//@Override
+	public int checkDate() {
+		int dayOfWeek = 0;
+		String fullDate = this.dateTime;
+		
+		String dateString [] = fullDate.split("-");
+		int Year = Integer.parseInt(dateString[0]);
+		int Month = Integer.parseInt(dateString[1]);
+		String DayTime = dateString[2];
+			String dayTimeString [] = DayTime.split(" ");
+			int Day = Integer.parseInt(dayTimeString[0]);
+			
+			Calendar c = Calendar.getInstance();
+			c.set(Year, Month, Day);
+
+			dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		
+		return dayOfWeek;
+	}
+	
+
+	@Override
+	public String getTypeStr() {
+		return "Movie Ticket";
+	}
+
+	@Override
 	public double getSubtotal() {
-		double subtotal = this.pricePerUnit * productQuantity;
+		double subtotal = (this.pricePerUnit * productQuantity) * (1.00 - this.discount);
 		return subtotal;
 	}
-	
-	//@Override
-	public double getTaxes(double subtotal) {
-		double taxes = subtotal * 0.06;
+
+	@Override
+	public double getTaxes() {
+		double taxes = (this.pricePerUnit * productQuantity) * (1.00 - this.discount) * 0.06;
 		return taxes;
 	}
 

@@ -6,6 +6,7 @@ public class SeasonPass extends Product {
 	private String startDate;
 	private String endDate;
 	private double cost;
+	private double fee = 8;
 	
 	//Constructor
 	public SeasonPass(String productCode, String productType, String name, String startDate, String endDate, double cost) {
@@ -14,8 +15,6 @@ public class SeasonPass extends Product {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.cost = cost;
-		
-		//this.productType = "Season Pass";
 	}
 	
 	//Getters and Setters
@@ -44,23 +43,21 @@ public class SeasonPass extends Product {
 		this.cost = cost;
 	}
 	
-	/*
 	@Override
-	public String getProductType() {
-		return productType;
-	}
-	*/
-	
-	//@Override
-	public double getSubtotal(double fee) {
+	public double getSubtotal() {
 		double subtotal = (this.cost + fee) * productQuantity;
 		return subtotal;
 	}
 	
-	//@Override
-	public double getTaxes(double subtotal) {
-		double taxes = subtotal * 0.06;
+	@Override
+	public double getTaxes() {
+		double taxes = ((this.cost + fee) * productQuantity) * 0.06;
 		return taxes;
+	}
+
+	@Override
+	public String getTypeStr() {
+		return "Season Pass";
 	}
 	
 
