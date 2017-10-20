@@ -1,3 +1,5 @@
+import java.util.Calendar;
+
 //This class creates a MovieTicket object of type product
 public class MovieTicket extends Product {
 
@@ -7,6 +9,7 @@ public class MovieTicket extends Product {
 	private String movieName;
 	private String screenNo;
 	private double pricePerUnit;
+	private double discount;
 
 	//Constructor
 	public MovieTicket(String productCode, String productType, String dateTime, Address address, String movieName,
@@ -59,6 +62,25 @@ public class MovieTicket extends Product {
 	public void setPricePerUnit(double pricePerUnit) {
 		this.pricePerUnit = pricePerUnit;
 	}
+	
+	public int checkDate() {
+		int dayOfWeek = 0;
+		String fullDate = this.dateTime;
+		
+		String dateString [] = fullDate.split("-");
+		int Year = Integer.parseInt(dateString[0]);
+		int Month = Integer.parseInt(dateString[1]);
+		String DayTime = dateString[2];
+			String dayTimeString [] = DayTime.split(" ");
+			int Day = Integer.parseInt(dayTimeString[0]);
+			
+			Calendar c = Calendar.getInstance();
+			c.set(Year, Month, Day);
+
+			dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+		
+		return dayOfWeek;
+	}
 
 	@Override
 	public String getTypeStr() {
@@ -67,14 +89,22 @@ public class MovieTicket extends Product {
 
 	@Override
 	public double getSubtotal() {
-		double subtotal = this.pricePerUnit * productQuantity;
+		double subtotal = (this.pricePerUnit * productQuantity)*(1 - discount);
 		return subtotal;
 	}
 
 	@Override
 	public double getTaxes() {
-		double taxes = this.pricePerUnit * productQuantity * 0.06;
+		double taxes = (this.pricePerUnit * productQuantity * 0.06) * (1 - discount);
 		return taxes;
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 
 

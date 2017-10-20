@@ -33,7 +33,7 @@ public class Refreshment extends Product{
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-	public void setDiscout(double discount) {
+	public void setDiscount(double discount) {
 		this.discount = discount;
 	}
 	

@@ -5,6 +5,7 @@ public class ParkingPass extends Product{
 	//data member
 	private double parkingFee;
 	private String ticketCode;
+	private int discount;
 	
 	//Constructor
 	public ParkingPass(String productCode, String productType, double parkingFee) {
@@ -33,19 +34,30 @@ public class ParkingPass extends Product{
 	
 	@Override
 	public double getSubtotal() {
-		double subtotal = parkingFee * productQuantity;
+		double subtotal = 0.0;
+		if (this.productQuantity > this.discount) {
+			subtotal = parkingFee * (this.productQuantity- this.discount);
+		}
 		return subtotal;
 	}
 	
 	@Override
 	public double getTaxes() {
-		double taxes = parkingFee * productQuantity * 0.04;
+		double taxes = parkingFee * (this.productQuantity- this.discount) * 0.04;
 		return taxes;
 	}
 
 	@Override
 	public String getTypeStr() {
 		return "Parking Pass";
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
 	}
 	
 	
