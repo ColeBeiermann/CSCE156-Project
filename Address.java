@@ -48,4 +48,10 @@ public class Address {
 	public void setCountry(String country) {
 		this.country = country;
 	} 
+	public String getAddressStr(){
+		String addressStr = this.street +	this.city + this.state
+				+ this.zip + this.country;
+		return addressStr;
+	
+	}
 }

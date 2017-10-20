@@ -7,7 +7,6 @@ public class MovieTicket extends Product {
 	private String movieName;
 	private String screenNo;
 	private double pricePerUnit;
-	private String productType;
 
 	//Constructor
 	public MovieTicket(String productCode, String productType, String dateTime, Address address, String movieName,
@@ -17,9 +16,6 @@ public class MovieTicket extends Product {
 		this.movieName = movieName;
 		this.screenNo = screenNo;
 		this.pricePerUnit = pricePerUnit;
-		this.productType = "MovieTicket";
-		
-		//this.productType = "Movie Ticket";
 	}
 
 	//Getters and Setters
@@ -62,23 +58,21 @@ public class MovieTicket extends Product {
 	public void setPricePerUnit(double pricePerUnit) {
 		this.pricePerUnit = pricePerUnit;
 	}
-	
-	/*
+
 	@Override
-	public String getProductType() {
-		return productType;
+	public String getTypeStr() {
+		return "Movie Ticket";
 	}
-	*/
-	
-	//@Override
+
+	@Override
 	public double getSubtotal() {
 		double subtotal = this.pricePerUnit * productQuantity;
 		return subtotal;
 	}
-	
-	//@Override
-	public double getTaxes(double subtotal) {
-		double taxes = subtotal * 0.06;
+
+	@Override
+	public double getTaxes() {
+		double taxes = this.pricePerUnit * productQuantity * 0.06;
 		return taxes;
 	}
 

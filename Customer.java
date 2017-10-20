@@ -53,6 +53,15 @@ public class Customer{
 	public String getType() {
 		return type;
 	}
+	public String getTypeStr() {
+		if(this.type.equals("S")){
+			return "Student";
+		}
+		else if(this.type.equals("G")) {
+			return "General";
+		}
+		return null;
+	}
 
 	public void setType(String type) {
 		this.type = type;

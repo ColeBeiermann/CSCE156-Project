@@ -30,24 +30,22 @@ public class ParkingPass extends Product{
 	public void setTicketCode(String code) {
 		this.ticketCode = code;
 	}
-
-	/*
-	@Override
-	public String getProductType() {
-		return productType;
-	}
-	*/
 	
-	//@Override
+	@Override
 	public double getSubtotal() {
-		double subtotal = this.parkingFee * productQuantity;
+		double subtotal = parkingFee * productQuantity;
 		return subtotal;
 	}
 	
-	//@Override
-	public double getTaxes(double subtotal) {
-		double taxes = subtotal * 0.04;
+	@Override
+	public double getTaxes() {
+		double taxes = parkingFee * productQuantity * 0.04;
 		return taxes;
+	}
+
+	@Override
+	public String getTypeStr() {
+		return "Parking Pass";
 	}
 	
 	

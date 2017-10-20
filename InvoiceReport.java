@@ -1,8 +1,9 @@
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class InvoiceReport {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 
 		//Create a FlatFileReader Object to read from data files
 		FlatFileReader fr = new FlatFileReader();
@@ -23,7 +24,6 @@ public class InvoiceReport {
 		InvoiceWriter writer = new InvoiceWriter(personList, customerList, productList, invoiceList);
 		
 		writer.writeSummary();
-		writer.writeReport();
 	}
 
 }
