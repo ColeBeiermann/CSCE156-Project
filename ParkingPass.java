@@ -12,6 +12,7 @@ public class ParkingPass extends Product{
 		super(productCode, productType);
 		this.parkingFee = parkingFee;
 		
+		//this.productType = "Parking Pass";
 	}
 
 	//Getters and Setters	
@@ -29,10 +30,6 @@ public class ParkingPass extends Product{
 	
 	public void setTicketCode(String code) {
 		this.ticketCode = code;
-	}
-	
-	public void setDiscount(int discount) {
-		this.discount = discount;
 	}
 	
 	@Override
@@ -53,6 +50,14 @@ public class ParkingPass extends Product{
 	@Override
 	public String getTypeStr() {
 		return "Parking Pass";
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
 	}
 	
 	

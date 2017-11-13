@@ -14,6 +14,7 @@ public class Refreshment extends Product{
 		this.name = name;
 		this.cost = cost;
 		
+		//this.productType = "Refreshment";
 	}
 
 	//getters and setters
@@ -44,7 +45,7 @@ public class Refreshment extends Product{
 	
 	@Override
 	public double getTaxes() {
-		taxes = (this.cost * productQuantity) * (1.00 - discount) * 0.04;
+		taxes = cost * productQuantity * 0.04;
 		return taxes;
 	}
 

@@ -63,10 +63,6 @@ public class MovieTicket extends Product {
 		this.pricePerUnit = pricePerUnit;
 	}
 	
-	public void setDiscout(double discount) {
-		this.discount = discount;
-	}
-	
 	public int checkDate() {
 		int dayOfWeek = 0;
 		String fullDate = this.dateTime;
@@ -85,7 +81,6 @@ public class MovieTicket extends Product {
 		
 		return dayOfWeek;
 	}
-	
 
 	@Override
 	public String getTypeStr() {
@@ -94,14 +89,22 @@ public class MovieTicket extends Product {
 
 	@Override
 	public double getSubtotal() {
-		double subtotal = (this.pricePerUnit * productQuantity) * (1.00 - this.discount);
+		double subtotal = (this.pricePerUnit * productQuantity)*(1 - discount);
 		return subtotal;
 	}
 
 	@Override
 	public double getTaxes() {
-		double taxes = (this.pricePerUnit * productQuantity) * (1.00 - this.discount) * 0.06;
+		double taxes = (this.pricePerUnit * productQuantity * 0.06) * (1 - discount);
 		return taxes;
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 
 
