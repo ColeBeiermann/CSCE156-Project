@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 //This class creates an invoice object
-public class Invoice {
+public class Invoice implements Comparable <Invoice>{
 
 	//Data Members
 	private String invoiceCode;
@@ -9,7 +9,7 @@ public class Invoice {
 	private String personCode;
 	private String invoiceDate;
 	private ArrayList<Product> productList;
-	
+
 	//Constructor
 	public Invoice(String invoiceCode, String customerCode, String personCode, String invoiceDate, ArrayList<Product> productList) {
 		this.invoiceCode = invoiceCode;
@@ -18,8 +18,8 @@ public class Invoice {
 		this.invoiceDate = invoiceDate;
 		this.setProductList(productList);
 	}
-	
-	
+
+
 	//Getters and Setters
 	public String getInvoiceCode() {
 		return invoiceCode;
@@ -28,7 +28,7 @@ public class Invoice {
 	public void setInvoiceCode(String invoiceCode) {
 		this.invoiceCode = invoiceCode;
 	}
-	
+
 	public String getCustomerCode() {
 		return customerCode;
 	}
@@ -36,7 +36,7 @@ public class Invoice {
 	public void setCustomerCode(String customerCode) {
 		this.customerCode = customerCode;
 	}
-	
+
 	public String getPersonCode() {
 		return personCode;
 	}
@@ -44,7 +44,7 @@ public class Invoice {
 	public void setPersonCode(String personCode) {
 		this.personCode = personCode;
 	}
-	
+
 	public String getInvoiceDate() {
 		return invoiceDate;
 	}
@@ -60,5 +60,10 @@ public class Invoice {
 	public void setProductList(ArrayList<Product> productList) {
 		this.productList = productList;
 	}
-	
+
+	@Override
+	public int compareTo(Invoice o) {
+		
+		return 0;
+	}
 }

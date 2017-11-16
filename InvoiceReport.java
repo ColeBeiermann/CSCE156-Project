@@ -29,6 +29,9 @@ public class InvoiceReport {
 	public static void main(String[] args) {
 		
 		//read from database
+		DatabaseReader dbr = new DatabaseReader();
+		dbr.connectMeIn();
+		dbr.readInvoices();
 		
 		InvoiceList<Invoice> invoiceOrderedList = new InvoiceList<Invoice>(new TotalComparator());
 	}
