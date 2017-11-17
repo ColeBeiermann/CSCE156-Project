@@ -7,10 +7,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class DatabaseReader {	
+	// This Person ArrayList stores the Person objects 
+	private ArrayList<Person> personList = new ArrayList<Person>();
+	// This Customer ArrayList stores the Customer objects 
+	private ArrayList<Customer> customerList = new ArrayList<Customer>();
+	// This Product ArrayList stores the Customer objects 
+	private ArrayList<Product> productList = new ArrayList<Product>();
+	// This Invoice ArrayList stores the Invoice 
+	private ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
+
 	private Connection conn = null;
 	private Statement stmt = null;
-	
-	private ArrayList<Invoice> invoiceList = null;
 
 
 	// JDBC driver name and database URL
@@ -37,12 +44,10 @@ public class DatabaseReader {
 
 
 	public ArrayList<Invoice> readInvoices() {
-		
-		ArrayList<Invoice> invoiceList = null;
 		String query = "SELECT InvoiceCode FROM Invoice";
 		Statement stat;
 
-		ArrayList <String> invCodeList = null;
+		ArrayList <String> invCodeList = new ArrayList<String>();
 
 		try {
 			stat = conn.createStatement();
@@ -98,8 +103,132 @@ public class DatabaseReader {
 		return invoiceList;
 	}
 
+	public ArrayList<Customer> readCustomers() {
+		
+		String query = "SELECT * FROM Customer";
+		Statement stat;
+
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery(query);
+
+			while (rs.next()){
+				String customerCode = rs.getString("CustomerCode");
+				String type = rs.getString("CustomerType");
+				String contact = rs.getString("PersonCode");
+				String name = rs.getString("CustomerName");
+				String fullAddress = rs.getString("Address");
+				Address address = null;
+
+
+				if(fullAddress.equals(" ")) {
+					address = new Address("","","","","");
+				}
+				else {
+					String addressStr [] = fullAddress.split(",");
+					String street = addressStr[0];
+					String city = addressStr[1];
+					String state = addressStr[2];
+					String zip = addressStr[3];
+					String country = addressStr[4];
+
+					address = new Address(street,city,state,zip,country);
+				}
+				Person contactPerson = null;
+				for (int x=0; x < personList.size(); x++) {
+					if(personList.get(x).getPersonCode().equals(contact)) {
+						contactPerson = personList.get(x);
+					}
+				}
+
+
+				Customer customer = new Customer(customerCode ,type, contactPerson, name, address);
+				customerList.add(customer);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+		return customerList;
+	}
+	
+	public ArrayList<Person> readPersons() {
+
+		String query = "SELECT * FROM Person";
+		Statement stat;
+
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery(query);
+
+			while (rs.next()){
+				String personCode = rs.getString("PersonCode");
+				String name = rs.getString("PersonName");
+				String fullAddress = rs.getString("Address");
+				String emailAddress = rs.getString("Email");
+				Address address = null;
+
+
+				if(fullAddress.equals(" ")) {
+					address = new Address("","","","","");
+				}
+				else {
+					String addressStr [] = fullAddress.split(",");
+					String street = addressStr[0];
+					String city = addressStr[1];
+					String state = addressStr[2];
+					String zip = addressStr[3];
+					String country = addressStr[4];
+
+					address = new Address(street,city,state,zip,country);
+				}
+				
+				Person person = new Person(personCode, name, address, emailAddress);
+				personList.add(person);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+		return personList;
+	}
+
+	public ArrayList<Product> readProducts() {
+		
+		String query = "SELECT * FROM Product";
+		Statement stat;
+
+		try {
+			stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery(query);
+
+			while (rs.next()){
+				String productCode = rs.getString("ProductCode");
+				String productType = rs.getString("ProductType");
+				int productCount = rs.getInt("ProductCount");		
+				
+				Product product = getProduct(productCode, productType,productCount);
+				productList.add(product);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("SQLException: ");
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return productList;
+	}
+	
 	private ArrayList<Product> getProductList(String invoiceCode){
-		ArrayList<Product> productList = null;
+		
+		ArrayList<Product> InvoiceProductList = new ArrayList<Product>();
+		
 		String SQL = "SELECT * FROM InvoiceProducts as IP JOIN Product as P ON IP.ProductCode = P.ProductCode WHERE IP.InvoiceCode = ?";
 
 		PreparedStatement ps = null;
@@ -114,15 +243,15 @@ public class DatabaseReader {
 				String productType = rs.getString("ProductType");
 				int quantity = rs.getInt("ProductCount");
 
-				productList.add(getProduct(productCode,productType, quantity));
+				InvoiceProductList.add(getProduct(productCode,productType, quantity));
 			}
 			rs.close();
 			ps.close();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return productList;
+		return InvoiceProductList;
 	}
 
 	private Product getProduct(String productCode, String type, int quantity) {
@@ -160,7 +289,7 @@ public class DatabaseReader {
 
 				}
 				else if(type.equals("M")) {
-					
+
 					String fullAddress = rs.getString("Address");
 					String addressStr [] = fullAddress.split(",");
 					String street = addressStr[0];
@@ -170,7 +299,7 @@ public class DatabaseReader {
 					String country = addressStr[4];
 
 					Address address = new Address(street,city,state,zip,country);
-					
+
 					product = new MovieTicket(productCode,productType,rs.getString("DateTime"), address, rs.getString("MovieName"),
 							rs.getString("ScreenNo"), rs.getDouble("PricePerUnit"));
 					product.setQuantity(quantity);
@@ -189,20 +318,20 @@ public class DatabaseReader {
 			}
 			rs.close();
 			ps.close();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return product;
 	}
 
-public void closeConnection(){
-	try {
-		conn.close();
-	} catch (SQLException e) {
-		e.printStackTrace();
+	public void closeConnection(){
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
-}
 }
 
 
